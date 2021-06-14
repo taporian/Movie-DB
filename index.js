@@ -65,10 +65,7 @@ app.get('/movies/edit', (req, res)=>{
     
 
 });
-app.get('/movies/delete', (req, res)=>{
-    
 
-});
 app.get('/movies/read/by-date', (req, res)=>{
     movies.sort(function(a, b) {
         var dateA = new Date(a.year), dateB = new Date(b.year);
@@ -134,7 +131,18 @@ app.get('/movies/read',(req, res)=>{
        
         
         });
-        
+       
+        app.get('/movies/delete/:id', (req, res)=>{
+            if(!movies[req.params.id]){
+                res.status(404);
+                res.send({status:404, error:true, message:'the movie '+req.params.id+' does not exist'})
+            }
+            else{
+                movies.splice(req.params.id, 1);
+                res.send({status:200, data:movies});
+            }
+
+        });
         
    
 

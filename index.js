@@ -1,4 +1,4 @@
-const { Router } = require('express');
+const { Router, response } = require('express');
 const express = require('express');
 
 const app = express();
@@ -72,6 +72,34 @@ app.get('/movies/delete', (req, res)=>{
     
 
 });
+app.get('/movies/read/by-date', (req, res)=>{
+    movies.sort(function(a, b) {
+        var dateA = new Date(a.year), dateB = new Date(b.year);
+        return dateA - dateB;
+    });
+    res.send({status:200,data:movies})
+
+});
+
+app.get('/movies/read/by-rating', (req, res)=>{
+    movies.sort(function(a, b) {
+        return b.rating - a.rating;
+    });
+    res.send({status:200,data:movies})
+
+});
+app.get('/movies/read/by-title', (req, res)=>{
+    movies.sort(function(a, b) {
+        var titleA = a.title.toLowerCase(), titleB = b.title.toLowerCase();
+        if (titleA < titleB) return -1;
+        if (titleA > titleB) return 1;
+        return 0;
+    });
+    res.send({status:200,data:movies})
+
+});
+
+
 
 
 

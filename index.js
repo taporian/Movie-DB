@@ -23,6 +23,34 @@ app.get('/time', (req, res)=>{
     res.send(response);
 
 });
+app.get('/hello/:id', (req, res)=>{
+    
+    const response = {
+        status:200, message:"Hello, "+req.params.id+"!"
+    };
+    res.send(response);
+
+});
+app.get('/hello/', (req, res)=>{
+    
+    const response = {
+        status:200, message:"Hello, !"
+    };
+    res.send(response);
+
+});
+app.get('/search', (req, res)=>{
+    const search = req.query.s;
+    if(search==""){
+        res.status(500);
+        res.send({status:500, error:true, message:"you have to provide a search"})
+    }
+
+   
+    res.send({status:200, message:"ok", data:search});
+
+});
+
 
 
 

@@ -141,6 +141,7 @@ app.get('/movies/read',(req, res)=>{
                 movies.splice(req.params.id, 1);
                 res.send({status:200, data:movies});
             }
+            
 
         });
         

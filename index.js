@@ -1,5 +1,7 @@
+const e = require('express');
 const { Router, response } = require('express');
 const express = require('express');
+const router = express.Router()
 
 const app = express();
 const movies = [
@@ -9,10 +11,11 @@ const movies = [
     { title: 'الإرهاب والكباب‎', year: 1992, rating: 6.2 }
 ]
 
+
 app.get('/', (req, res) => {
   res.send('ok.');
 });
-const router = express.Router()
+
 
 app.get('/test', (req, res)=>{
     const response = {
@@ -141,10 +144,141 @@ app.get('/movies/read',(req, res)=>{
                 movies.splice(req.params.id, 1);
                 res.send({status:200, data:movies});
             }
-            
+
 
         });
+        app.get('/movies/update/:id',(req,res)=>{
+            id=req.params.id-1;
+            let updateTitle,updateYear,updateRating;
+            let arr={};
+             if(req.query.title)updateTitle=req.query.title;
+             if(req.query.year)updateYear=req.query.year;
+             if(req.query.rating)updateRating=req.query.rating;
+             if(updateTitle){
+                 arr.title=updateTitle
+             }
+             if(updateYear){
+                arr.year=updateYear
+            }
+            if(updateRating){
+                arr.rating=updateRating
+            }
+             if(arr.hasOwnProperty('title')){
+                 movies[req.params.id].title=arr.title;
+             }
+             if(arr.hasOwnProperty('year')){
+                movies[req.params.id].year=arr.year;
+            }
+            if(arr.hasOwnProperty('rating')){
+                movies[req.params.id].rating=arr.rating;
+            }
+         
+            
+              res.send({status:200, data:movies});
+             
+            });
+             
+              
+            //  if(!movies[req.params.id]==false){
+            //    params.append(req.params.id.title, title);
+            //  }
+            
+       
+
+        // app.get('/movies/update/:id', (req, res) => {
+        //       let title = req.query.title;
+        //          let year = req.query.year;
+        //         let rating =req.query.rating;
+        //     console.log(req.params,req.query,movies[req.params.id].title);
+        //     if(!movies[req.params.id]==false){
+        //         console.log('hey',req.query.title)
+        //         if(title==''){
+        //             console.log('title inside');
+                    
+                   
+                    
+        //         }
+        //     }
+        // });
+                // else if(rating =='' && title!='' && year !='' ){
+                //     console.log('rating inside');
+                //     movies[req.params.id].year=year;
+                //     movies[req.params.id].title=title;
+                    
+                // }
+                // else if(year =='' && title!=''){
+                //     console.log('year inside');
+                //     movies[req.params.id].rating=rating;
+                //     movies[req.params.id].title=title;
+                    
+                // }
+                
+                
+            
+           
+            // let x=req.query.title;
+            // movies[req.params.id].title=x;
+            // movies.replace({title},{x});
+            
+            
+      
+        // app.get('/movies/update/:id',(req, res)=>{
+        //     // let title = req.query.title;
+        //     // let year = req.query.year;
+        //     // let rating =req.query.rating;
+            
+        //     // console.log( movies[req.params.id].year);
+            
+            
+                
+        //     //     if(!movies[req.params.id]==false){
+        //     //         if(!year==true){
+        //     //                     movies[req.params.id].title=title;
+        //     //                     res.send({status:200, data:movies});
+        //     //                 }
+                          
+        //     //     }
+        //     //       else{
+        //             res.send({status:200, data:movies})
+        //     //       }
+                   
+                
+               
+         
+            
+            
+
+        //     // if(!movies[req.params.id]==false){
+        //     //     if(!year==true){
+        //     //         movies[req.params.id].title=title;
+        //     //         res.send({status:200, data:movies});
+        //     //     }
+        //     //     else if(!year==false || !rating==false){
+        //     //             if(!rating==false){
+        //     //                 movies[req.params.id].rating=rating; 
+        //     //                 movies[req.params.id].year=year; 
+        //     //                 movies[req.params.id].title=title;
+        //     //                 res.send({status:200, data:movies});
+        //     //             }
+                    
+        //     //         movies[req.params.id].year=year; 
+        //     //         movies[req.params.id].title=title;
+        //     //         res.send({status:200, data:movies});
+        //     //     }
+                
+        //     //     else{
+        //     //         res.send({status:200, data:movies});
+        //     //     }
+  
+        //     // }
+        //     // else{
+                
+        //     //     res.send({status:200, data:movies});
+        //     // }
+            
         
+        // });
+
    
 
    

@@ -3,6 +3,7 @@ const router = express.Router();
 // posts model
 
 const Posts = require('../../models/Posts');
+const Users = require('../../models/Register');
 
 // @routes  GET  /
 router.get('/test', (req, res) => {
@@ -67,7 +68,7 @@ router.get('/search', (req, res)=>{
 
 
 // @routes  GET  /movies/read
-// @desc GET All post
+// @desc GET All movies
 router.get('/movies/read', async (req,res) => {
     try{
         const posts= await Posts.find();
@@ -179,6 +180,114 @@ router.post('/movies/add', async (req,res)=>{
         res.status(400).json({message: err.message })
 
     }
+});
+
+// @routes  POST  /users/add
+// @desc Create An user
+
+router.post('/users/add', async (req,res)=>{
+    
+    
+    try {
+        const newUser = new Users({
+            user: req.body.user,
+            password: req.body.password ,
+            
+        });
+         newUser  = await newUser.save()
+        res.status(201).json(newUser)
+    } catch(err){
+        res.status(400).json({message: err.message })
+
+    }
+});
+
+// @routes  GET  /Users/read
+// @desc GET All Users
+router.get('/users/read', async (req,res) => {
+    try{
+        const posts= await Users.find();
+        if(!posts) throw Error('No Movies');
+        res.status(200).json(posts);
+
+    }
+    catch(err){
+        res.status(400).json({msg:err})
+    }
+})
+
+// @routes  POST /users/login/:user/:password/addMovie
+// @desc POST A movie only if user exists
+
+router.post('/users/login/:user/:password/addMovie', async (req,res)=>{
+  
+    
+        let userTest = req.params.user;
+        let userPassword = req.params.password;
+        
+      const post = await Users.findOne({ user: userTest});
+      const posts = await Users.findOne({ password: userPassword});
+    
+      
+      if(post!=null && posts != null){
+       
+      
+      try {
+        const newMovie = new Posts({
+            title: req.body.title,
+            year: req.body.year ,
+            rating: req.body.rating  ,
+        });
+         newMovie  = await newMovie.save()
+        res.status(201).json(newMovie)
+    } catch(err){
+        res.status(400).json({message: err.message })
+
+    }
+}
+else(
+    res.status(400).json({message:"user or password doesn't exist" })
+)
+      
+      
+
+      
+   
+  });
+  // @routes  PATCH /users/login/:user/:password/updateMovie/:id
+// @desc PATCH A movie only if user exists and ID
+
+  router.patch('/users/login/:user/:password/updateMovie/:id', async (req,res)=>{
+  
+    
+    let userTest = req.params.user;
+    let userPassword = req.params.password;
+    
+  const post = await Users.findOne({ user: userTest});
+  const posts = await Users.findOne({ password: userPassword});
+  
+  
+  
+  if(post!=null && posts != null){
+   
+    try{
+    
+        const post = await Posts.findByIdAndUpdate(req.params.id,req.body);
+        if(!post) throw Error('Something went wrong while updating the movie')
+        res.status(200).json({success:true})
+      }
+      catch(err){
+        res.status(400).json({msg:err})
+      }
+}
+else(
+res.status(400).json({message:"user or password doesn't exist" })
+)
+  
+  
+
+  
+
 });
 
 

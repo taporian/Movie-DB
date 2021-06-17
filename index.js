@@ -21,6 +21,7 @@ mongoose.connect(MONGO_URI,{useUnifiedTopology: true ,
 
 // User routes
 
+
 app.use('/',postsRoutes);
 
 const PORT = process.env.PORT || 3000;
